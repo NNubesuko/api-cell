@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  portainer:
+    image: portainer/portainer-ce:lts
+    restart: unless-stopped
+    ports:
+      - "${PORTAINER_AGENT_PORT:-8000}:8000"
+      - "${PORTAINER_HTTP_PORT:-9000}:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
+  localstack:
+    image: localstack/localstack
+    restart: unless-stopped
+    environment:
+      - GATEWAY_LISTEN=0.0.0.0:${LOCALSTACK_GATEWAY_PORT:-9100}
+      - EXTERNAL_SERVICE_PORTS_START=${LOCALSTACK_SERVICE_PORT_START:-9201}
+      - EXTERNAL_SERVICE_PORTS_END=${LOCALSTACK_SERVICE_PORT_END:-9250}
+    ports:
+      - "${LOCALSTACK_GATEWAY_PORT:-9100}:${LOCALSTACK_GATEWAY_PORT:-9100}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${LOCALSTACK_VOLUME_PATH:-/home/node/.cache/localstack}:/var/lib/localstack
+
+volumes:
+  portainer_data:

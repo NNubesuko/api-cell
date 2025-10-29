@@ -1,0 +1,22 @@
+# Terraform core
+.terraform/
+.terraform.tfstate.lock.info
+terraform.tfstate
+terraform.tfstate.*
+crash.log
+crash.*.log
+
+# Plans
+*.tfplan
+*.plan
+
+# Vars (値入りはコミットしない)
+*.tfvars
+*.auto.tfvars
+!environments/*.tfvars
+
+# Local overrides
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
